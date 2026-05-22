@@ -67,6 +67,7 @@ Open `notebook/cell_type_annotation.ipynb` directly in Google Colab with a T4 GP
 - Python 3.12
   
 
-## Acknowledgment
+## Citation
 
-The authors acknowledge the use of ChatGPT (OpenAI) and QuillBot for language editing and grammatical refinement of portions of the manuscript. All scientific content, experimental design, analysis, results, and conclusions were conceived, conducted, and written by the authors.
+If you use this pipeline, please cite:
+Zenodo DOI: https://doi.org/10.5281/zenodo.20341329
