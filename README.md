@@ -46,7 +46,7 @@ scrna-cell-type-annotation/
 ├── README.md
 ├── requirements.txt
 ├── notebook/
-│   └── cell_type_annotation.ipynb    # Full Colab notebook (recommended)
+│   └── Cell_type_annotation.ipynb    # Full Colab notebook (recommended)
 ├── 01_load_explore.py                # Data loading and exploration
 ├── 02_preprocessing.py               # Filtering, normalization, HVG selection
 ├── 03_knn_rf_cv.py                   # KNN and Random Forest with 5-fold CV
