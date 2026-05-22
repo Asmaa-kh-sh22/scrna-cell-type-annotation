@@ -9,7 +9,6 @@ This repository contains the code for the paper:
 
 > **Benchmarking Classical and Transformer-Based Models for Cell Type Annotation in Single-Cell RNA Sequencing**
 > Afrah Sulaih AL-Malki, Asmaa Khalid AL-Shumrani, Walaa Salim AL-Fahmi, Tahani M. Alsubait
-> *Submitted to IEEE Access, 2025 (under review)*
 
 We benchmark four models across three categories for automated cell type annotation in scRNA-seq data:
 
@@ -48,12 +47,11 @@ scrna-cell-type-annotation/
 ├── requirements.txt
 ├── notebook/
 │   └── cell_type_annotation.ipynb    # Full Colab notebook (recommended)
-└── src/
-    ├── 01_load_explore.py            # Data loading and exploration
-    ├── 02_preprocessing.py           # Filtering, normalization, HVG selection
-    ├── 03_knn_rf_cv.py               # KNN and Random Forest with 5-fold CV
-    ├── 04_transformer.py             # Self-supervised Transformer pretraining
-    └── 05_hybrid_transformer_svm.py  # Hybrid Transformer + SVM model
+├── 01_load_explore.py                # Data loading and exploration
+├── 02_preprocessing.py               # Filtering, normalization, HVG selection
+├── 03_knn_rf_cv.py                   # KNN and Random Forest with 5-fold CV
+├── 04_transformer.py                 # Self-supervised Transformer pretraining
+└── 05_hybrid_transformer_svm.py      # Hybrid Transformer + SVM model
 ```
 
 ## How to Run
@@ -61,34 +59,13 @@ scrna-cell-type-annotation/
 ### Option 1: Google Colab (Recommended)
 Open `notebook/cell_type_annotation.ipynb` directly in Google Colab with a T4 GPU runtime.
 
-### Option 2: Local
-```bash
-pip install -r requirements.txt
-python src/01_load_explore.py
-python src/02_preprocessing.py
-python src/03_knn_rf_cv.py
-python src/04_transformer.py
-python src/05_hybrid_transformer_svm.py
-```
+**Note**: This code is designed for Google Colab and requires Google Drive for dataset access. Local execution is not supported without modifying the file paths and removing Colab-specific imports.
 
 ## Environment
 
 - Platform: Google Colab (NVIDIA T4 GPU)
 - Python 3.12
-
-## Citation
-
-This paper is currently under review. Once published, please cite as:
-
-```bibtex
-@article{almalki2025benchmarking,
-  title={Benchmarking Classical and Transformer-Based Models for Cell Type Annotation in Single-Cell RNA Sequencing},
-  author={AL-Malki, Afrah Sulaih and AL-Shumrani, Asmaa Khalid and AL-Fahmi, Walaa Salim and Alsubait, Tahani M.},
-  journal={IEEE Access},
-  year={2025},
-  note={Under review}
-}
-```
+  
 
 ## Acknowledgment
 
