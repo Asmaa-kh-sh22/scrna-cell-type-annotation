@@ -56,7 +56,7 @@ scrna-cell-type-annotation/
 
 ## How to Run
 
-### Option 1: Google Colab (Recommended)
+### Google Colab (Recommended)
 Open `notebook/cell_type_annotation.ipynb` directly in Google Colab with a T4 GPU runtime.
 
 **Note**: This code is designed for Google Colab and requires Google Drive for dataset access. Local execution is not supported without modifying the file paths and removing Colab-specific imports.
