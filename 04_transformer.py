@@ -81,12 +81,13 @@ class GeneTransformer(nn.Module):
 
 # ── Self-supervised pretraining (masked gene modeling) ───────────────────────
 mask_ratio  = 0.15
-epochs      = 10
+epochs      = 30
 batch_size  = 256
 lr          = 1e-3
 weight_decay = 1e-4
 
-model   = GeneTransformer(n_genes=n_genes).to(device)
+model   = GeneTransformer(n_genes=n_genes, n_tokens=64, d_model=256, 
+                          n_heads=8, n_layers=4, p_drop=0.1).to(device)
 opt     = optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
 loss_fn = nn.SmoothL1Loss()
 
@@ -114,7 +115,8 @@ torch.save(model.state_dict(), "/content/transformer_encoder.pt")
 print("Saved: /content/transformer_encoder.pt")
 
 # ── Frozen embedder for sklearn ───────────────────────────────────────────────
-_frozen = GeneTransformer(n_genes=n_genes, p_drop=0.0).to(device)
+_frozen = GeneTransformer(n_genes=n_genes, n_tokens=64, d_model=256, 
+                          n_heads=8, n_layers=4, p_drop=0.0).to(device)
 _frozen.load_state_dict(torch.load("/content/transformer_encoder.pt", map_location=device))
 _frozen.eval()
 for p in _frozen.parameters():
