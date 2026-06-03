@@ -58,13 +58,20 @@ from sklearn.model_selection import cross_val_predict as cvp
 y_pred_rf  = cvp(rf_pipe,          X,       y_true, cv=skf, n_jobs=2)
 y_pred_tr  = cvp(transformer_pipe, X_dense, y_true, cv=skf, n_jobs=2)
 
+y_pred_svm = cvp(svm_raw_pipe, X, y_true, cv=skf, n_jobs=2)
+
+y_pred_svm = cvp(svm_raw_pipe, X, y_true, cv=skf, n_jobs=2)
+
+y_pred_svm = cvp(svm_raw_pipe, X, y_true, cv=skf, n_jobs=2)
+
 fig, axes = plt.subplots(2, 2, figsize=(20, 16))
-(ax_rf, ax_tr), (ax_empty, ax_hyb) = axes
+(ax_rf, ax_tr), (ax_hyb, ax_svm) = axes
 
 for ax, preds, title in [
     (ax_rf,  y_pred_rf,  "Random Forest"),
     (ax_tr,  y_pred_tr,  "Transformer"),
-    (ax_hyb, y_pred_hyb, "Transformer + SVM (Hybrid)")
+    (ax_hyb, y_pred_hyb, "Transformer + SVM (Hybrid)"),
+    (ax_svm, y_pred_svm, "SVM on raw HVGs (Ablation)")
 ]:
     cm = confusion_matrix(y_true, preds, labels=classes)
     sns.heatmap(cm, annot=False, cmap='Blues',
@@ -82,14 +89,43 @@ plt.show()
 models   = ['KNN', 'Random Forest', 'Transformer', 'Transformer + SVM']
 f1_scores = [0.673, 0.673, 0.675, 0.7029]
 
-plt.figure(figsize=(6, 4))
-bars = plt.bar(models, f1_scores, color=['#4C72B0', '#4C72B0', '#4C72B0', '#DD8452'])
+models    = ['KNN', 'Random Forest', 'Transformer', 'Transformer + SVM', 'SVM (raw HVGs)']
+f1_scores = [0.6730, 0.6732, 0.7630, 0.7759, 0.7318]
+
+plt.figure(figsize=(7, 4))
+bars = plt.bar(models, f1_scores, color=['#4C72B0', '#4C72B0', '#4C72B0', '#DD8452', '#4C72B0'])
 plt.title('Macro F1-Score Comparison', fontsize=12, weight='bold')
 plt.ylabel('Macro F1-Score')
-plt.ylim(0.65, 0.72)
+plt.ylim(0.65, 0.80)
+plt.xticks(rotation=15, ha='right')
 for bar in bars:
     plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.002,
              f"{bar.get_height():.3f}", ha='center', va='bottom', fontsize=10)
 plt.tight_layout()
 plt.savefig("f1_score_comparison.png", dpi=400, bbox_inches='tight')
 plt.show()
+
+# ── Standard deviations for all models ───────────────────────────────────────
+for name, scores in [
+    ("KNN", knn_scores),
+    ("Random Forest", rf_scores),
+    ("Transformer", tr_scores),
+    ("Transformer+SVM", svm_scores),
+    ("SVM on raw HVGs", svm_raw_scores)
+]:
+    print(f"\n=== {name} ===")
+    print(f"Accuracy        : {scores['test_accuracy'].mean():.4f} ± {scores['test_accuracy'].std():.4f}")
+    print(f"F1-macro        : {scores['test_f1_macro'].mean():.4f} ± {scores['test_f1_macro'].std():.4f}")
+    print(f"Precision-macro : {scores['test_precision_macro'].mean():.4f} ± {scores['test_precision_macro'].std():.4f}")
+    print(f"Recall-macro    : {scores['test_recall_macro'].mean():.4f} ± {scores['test_recall_macro'].std():.4f}")
+
+# ── Wilcoxon signed-rank test ─────────────────────────────────────────────────
+from scipy.stats import wilcoxon
+hybrid_f1 = svm_scores['test_f1_macro']
+for name, scores in [
+    ("KNN", knn_scores),
+    ("Random Forest", rf_scores),
+    ("Transformer", tr_scores)
+]:
+    stat, p = wilcoxon(hybrid_f1, scores['test_f1_macro'])
+    print(f"Hybrid vs {name}: W={stat:.4f}, p={p:.4f}")
